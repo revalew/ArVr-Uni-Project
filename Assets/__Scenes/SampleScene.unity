@@ -559,6 +559,8 @@ MonoBehaviour:
     prefabToSpawn: {fileID: 434023797309887072, guid: cf32d1dc353245644b4351266129b21b, type: 3}
   - imageName: Watcher
     prefabToSpawn: {fileID: 7035340801813807993, guid: c4af682be65ae26478eefbc1f12c90a1, type: 3}
+  modelOrientation: 0
+  heightOffset: 0
 --- !u!114 &2015122934
 MonoBehaviour:
   m_ObjectHideFlags: 0

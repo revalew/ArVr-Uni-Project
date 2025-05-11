@@ -12,13 +12,29 @@ public class ARTrackImage : MonoBehaviour
         public GameObject prefabToSpawn;
     }
 
-    // List of image name and prefab pairs
+    // Lista par obraz-prefab
     public List<ImagePrefabPair> imagePrefabPairs = new List<ImagePrefabPair>();
     
-    // Dictionary to map detected images to instantiated prefabs
+    // Słownik do śledzenia zinstancjonowanych obiektów
     private Dictionary<string, GameObject> spawnedObjects = new Dictionary<string, GameObject>();
     
     private ARTrackedImageManager trackedImageManager;
+    
+    // Opcje orientacji modelu
+    public enum ModelOrientation
+    {
+        FacingCamera,       // Model patrzy w stronę kamery/użytkownika
+        FacingImageUp,      // Model patrzący w górę (domyślne zachowanie AR)
+        FacingImageForward  // Model patrzy "do przodu" względem obrazu
+    }
+    
+    // Wybór orientacji dla wszystkich modeli
+    [Tooltip("Określa, jak model będzie zorientowany po wykryciu obrazu")]
+    public ModelOrientation modelOrientation = ModelOrientation.FacingCamera;
+    
+    // Opcjonalny offset pozycji (gdyby model był zagłębiony w podłodze/obrazie)
+    [Tooltip("Dodatkowe przesunięcie modelu w górę od pozycji obrazu")]
+    public float heightOffset = 0.0f;
 
     private void Awake()
     {
@@ -37,23 +53,23 @@ public class ARTrackImage : MonoBehaviour
 
     private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
     {
-        // Handle added tracked images
+        // Obsługa dodanych obrazów
         foreach (var trackedImage in eventArgs.added)
         {
-            Debug.Log($"Image detected: {trackedImage.referenceImage.name} (added)");
+            Debug.Log($"Wykryto obraz: {trackedImage.referenceImage.name} (dodany)");
             UpdateImageTracking(trackedImage);
         }
 
-        // Handle updated tracked images
+        // Obsługa zaktualizowanych obrazów
         foreach (var trackedImage in eventArgs.updated)
         {
             UpdateImageTracking(trackedImage);
         }
 
-        // Handle removed tracked images
+        // Obsługa usuniętych obrazów
         foreach (var trackedImage in eventArgs.removed)
         {
-            // Remove the associated prefab
+            // Usuń powiązany prefab
             if (spawnedObjects.TryGetValue(trackedImage.referenceImage.name, out GameObject prefab))
             {
                 Destroy(prefab);
@@ -66,49 +82,121 @@ public class ARTrackImage : MonoBehaviour
     {
         string imageName = trackedImage.referenceImage.name;
         
-        // Get the prefab to instantiate based on the tracked image
+        // Pobierz prefab odpowiadający wykrytemu obrazowi
         GameObject prefabToSpawn = GetPrefabForImage(imageName);
         
         if (prefabToSpawn == null)
         {
-            Debug.LogWarning($"No prefab found for image: {imageName}");
+            Debug.LogWarning($"Nie znaleziono prefabu dla obrazu: {imageName}");
             return;
         }
 
-        // Either spawn a new prefab for this image or update the existing one
+        // Obsługa w zależności od stanu śledzenia
         if (trackedImage.trackingState == TrackingState.Tracking)
         {
-            // If we haven't instantiated a prefab for this image yet
+            // Jeśli jeszcze nie instancjonowaliśmy prefabu dla tego obrazu
             if (!spawnedObjects.TryGetValue(imageName, out GameObject prefabInstance))
             {
-                // Create the prefab
-                prefabInstance = Instantiate(prefabToSpawn, trackedImage.transform.position, trackedImage.transform.rotation);
+                // Pozycja z ewentualnym offsetem wysokości
+                Vector3 position = trackedImage.transform.position;
+                if (heightOffset != 0)
+                {
+                    position += trackedImage.transform.up * heightOffset;
+                }
                 
-                // Play animation if the prefab has an Animator component
+                // Ustal orientację w zależności od wybranej opcji
+                Quaternion rotation;
+                
+                switch (modelOrientation)
+                {
+                    case ModelOrientation.FacingCamera:
+                        // Model patrzy w stronę kamery (użytkownika)
+                        Vector3 cameraPosition = Camera.main.transform.position;
+                        Vector3 direction = cameraPosition - position;
+                        direction.y = 0; // Ignorujemy różnicę wysokości
+                        
+                        if (direction != Vector3.zero)
+                        {
+                            rotation = Quaternion.LookRotation(direction);
+                        }
+                        else
+                        {
+                            // Fallback jeśli kamera jest dokładnie nad/pod obrazem
+                            rotation = Quaternion.LookRotation(Camera.main.transform.forward);
+                        }
+                        break;
+                        
+                    case ModelOrientation.FacingImageForward:
+                        // Model patrzy "do przodu" względem obrazu 
+                        // (zakładając, że obraz ma określoną orientację)
+                        rotation = trackedImage.transform.rotation * Quaternion.Euler(90f, 0f, 0f);
+                        break;
+                        
+                    case ModelOrientation.FacingImageUp:
+                    default:
+                        // Domyślne zachowanie - model obrócony jak obraz
+                        rotation = trackedImage.transform.rotation;
+                        break;
+                }
+                
+                // Utwórz prefab z odpowiednią orientacją
+                prefabInstance = Instantiate(prefabToSpawn, position, rotation);
+                
+                // Uruchom animację, jeśli prefab ma komponent Animator
                 Animator animator = prefabInstance.GetComponent<Animator>();
                 if (animator != null)
                 {
                     animator.enabled = true;
-                    // Play the default animation or a specific one
-                    // animator.Play("AnimationName"); // Uncomment and specify animation name if needed
+                    // Odkomentuj, aby uruchomić konkretną animację
+                    // animator.Play("NazwaAnimacji");
                 }
                 
-                // Add to dictionary
+                // Dodaj do słownika
                 spawnedObjects.Add(imageName, prefabInstance);
                 
-                Debug.Log($"Spawned prefab for image: {imageName}");
+                Debug.Log($"Utworzono prefab dla obrazu: {imageName}");
             }
             else
             {
-                // Update position and rotation of existing prefab
-                prefabInstance.transform.position = trackedImage.transform.position;
-                prefabInstance.transform.rotation = trackedImage.transform.rotation;
+                // Aktualizuj pozycję i rotację istniejącego prefabu
+                Vector3 position = trackedImage.transform.position;
+                if (heightOffset != 0)
+                {
+                    position += trackedImage.transform.up * heightOffset;
+                }
+                
+                prefabInstance.transform.position = position;
+                
+                // Aktualizuj rotację w zależności od wybranej opcji
+                switch (modelOrientation)
+                {
+                    case ModelOrientation.FacingCamera:
+                        Vector3 cameraPosition = Camera.main.transform.position;
+                        Vector3 direction = cameraPosition - position;
+                        direction.y = 0; // Ignorujemy różnicę wysokości
+                        
+                        if (direction != Vector3.zero)
+                        {
+                            prefabInstance.transform.rotation = Quaternion.LookRotation(direction);
+                        }
+                        break;
+                        
+                    case ModelOrientation.FacingImageForward:
+                        prefabInstance.transform.rotation = trackedImage.transform.rotation * Quaternion.Euler(90f, 0f, 0f);
+                        break;
+                        
+                    case ModelOrientation.FacingImageUp:
+                    default:
+                        prefabInstance.transform.rotation = trackedImage.transform.rotation;
+                        break;
+                }
+                
                 prefabInstance.SetActive(true);
             }
         }
         else
         {
-            // If the image is not being tracked, disable the prefab
+            // Jeśli obraz nie jest śledzony, wyłącz prefab
             if (spawnedObjects.TryGetValue(imageName, out GameObject prefabInstance))
             {
                 prefabInstance.SetActive(false);
@@ -118,7 +206,7 @@ public class ARTrackImage : MonoBehaviour
 
     private GameObject GetPrefabForImage(string imageName)
     {
-        // Find the prefab that matches the image name
+        // Znajdź prefab pasujący do nazwy obrazu
         foreach (var pair in imagePrefabPairs)
         {
             if (pair.imageName == imageName)
