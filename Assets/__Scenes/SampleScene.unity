@@ -521,7 +521,7 @@ MonoBehaviour:
       m_Calls: []
   m_SerializedLibrary: {fileID: 11400000, guid: cbdd24544f45a024780c21a6e3dfee5b, type: 2}
   m_MaxNumberOfMovingImages: 1
-  m_TrackedImagePrefab: {fileID: 4340608975289808789, guid: 86655b7afe6f948eeb347c2d5e26c2a5, type: 3}
+  m_TrackedImagePrefab: {fileID: 0}
 --- !u!114 &2015122933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,6 +534,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37575eb4bef32834582be8f59a4fa122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  imagePrefabPairs:
+  - imageName: Angry_Log
+    prefabToSpawn: {fileID: 4800839809881058091, guid: 9e0a093a368ee4f10b7c6c056f5f7077, type: 3}
+  - imageName: Creep_Horror_Creature
+    prefabToSpawn: {fileID: 4907239047242697928, guid: 82430f94fd1381c43878fce981a5aa43, type: 3}
+  - imageName: Creepy_Snowman_PBR
+    prefabToSpawn: {fileID: 3665448684949034829, guid: 668caeef3f091244986846c489fc2dd6, type: 3}
+  - imageName: Fantasy_Mushroom_Mon
+    prefabToSpawn: {fileID: 1382258774799692, guid: 8edb2fa3dc2112246b53357be701f37b, type: 3}
+  - imageName: Ghost
+    prefabToSpawn: {fileID: 7252557991237821940, guid: 62d2a7f5da1084f6994dcbca19a2ddb2, type: 3}
+  - imageName: Marker
+    prefabToSpawn: {fileID: 4340608975289808789, guid: 86655b7afe6f948eeb347c2d5e26c2a5, type: 3}
+  - imageName: Monster_Buddy_Cactus
+    prefabToSpawn: {fileID: 7427070853888570003, guid: dcc982307a817354fafb192abcd9b917, type: 3}
+  - imageName: Monster_Buddy_Mushroom
+    prefabToSpawn: {fileID: 264213370537990050, guid: 7162793d91fb69744a25a3a0371894ba, type: 3}
+  - imageName: Spider_1
+    prefabToSpawn: {fileID: 5572779666037620316, guid: bb5565890ab04a0419894e9d8455e118, type: 3}
+  - imageName: Stylized_Cute_Alien_Character
+    prefabToSpawn: {fileID: 6064476555349323561, guid: 9ac148c69b5cff64c9db44b77dc50878, type: 3}
+  - imageName: Stylized_Devil_Bulldog
+    prefabToSpawn: {fileID: 434023797309887072, guid: cf32d1dc353245644b4351266129b21b, type: 3}
+  - imageName: Watcher
+    prefabToSpawn: {fileID: 7035340801813807993, guid: c4af682be65ae26478eefbc1f12c90a1, type: 3}
 --- !u!114 &2015122934
 MonoBehaviour:
   m_ObjectHideFlags: 0

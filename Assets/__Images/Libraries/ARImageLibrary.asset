@@ -27,3 +27,113 @@ MonoBehaviour:
     m_SpecifySize: 1
     m_Name: Marker
     m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5072158059894404549
+      m_GuidHigh: 17049173324056592017
+    m_SerializedTextureGuid:
+      m_GuidLow: 15331817491230994316
+      m_GuidHigh: 2511351959238285931
+    m_Size: {x: 0.1, y: 0.06666667}
+    m_SpecifySize: 1
+    m_Name: Angry_Log
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5514429953891256226
+      m_GuidHigh: 14188922974838244759
+    m_SerializedTextureGuid:
+      m_GuidLow: 1490619051833129271
+      m_GuidHigh: 9750444270166919002
+    m_Size: {x: 0.1, y: 0.06666667}
+    m_SpecifySize: 1
+    m_Name: Creep_Horror_Creature
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4945800908454360012
+      m_GuidHigh: 11045769080829075646
+    m_SerializedTextureGuid:
+      m_GuidLow: 12987753355927586757
+      m_GuidHigh: 8816451446373254746
+    m_Size: {x: 0.1, y: 0.05626506}
+    m_SpecifySize: 1
+    m_Name: Creepy_Snowman_PBR
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5300013622630131208
+      m_GuidHigh: 16655254061562417328
+    m_SerializedTextureGuid:
+      m_GuidLow: 13015854251312538585
+      m_GuidHigh: 875415349612458696
+    m_Size: {x: 0.1, y: 0.052500002}
+    m_SpecifySize: 1
+    m_Name: Fantasy_Mushroom_Mon
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5428558504318805864
+      m_GuidHigh: 10709380193192128661
+    m_SerializedTextureGuid:
+      m_GuidLow: 312199018659881729
+      m_GuidHigh: 10247909403287834792
+    m_Size: {x: 0.1, y: 0.06666667}
+    m_SpecifySize: 1
+    m_Name: Ghost
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5727974060013188054
+      m_GuidHigh: 14524548483178125723
+    m_SerializedTextureGuid:
+      m_GuidLow: 14185981957079144019
+      m_GuidHigh: 16703311038740294345
+    m_Size: {x: 0.1, y: 0.05626506}
+    m_SpecifySize: 1
+    m_Name: Monster_Buddy_Cactus
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4701398887460775350
+      m_GuidHigh: 5080675187653441444
+    m_SerializedTextureGuid:
+      m_GuidLow: 2610231922897314344
+      m_GuidHigh: 13002198817704008938
+    m_Size: {x: 0.1, y: 0.05626506}
+    m_SpecifySize: 1
+    m_Name: Monster_Buddy_Mushroom
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5352189063317074718
+      m_GuidHigh: 5513672072843237270
+    m_SerializedTextureGuid:
+      m_GuidLow: 4932510840380104467
+      m_GuidHigh: 1450393147953103752
+    m_Size: {x: 0.1, y: 0.06666667}
+    m_SpecifySize: 1
+    m_Name: Spider_1
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5656981943076769511
+      m_GuidHigh: 8509181823352796289
+    m_SerializedTextureGuid:
+      m_GuidLow: 15310325323231313152
+      m_GuidHigh: 17856610050044035704
+    m_Size: {x: 0.1, y: 0.06666667}
+    m_SpecifySize: 1
+    m_Name: Stylized_Cute_Alien_Character
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5686456461271152626
+      m_GuidHigh: 15407058674907519162
+    m_SerializedTextureGuid:
+      m_GuidLow: 12999010577753230361
+      m_GuidHigh: 15856688155981208473
+    m_Size: {x: 0.1, y: 0.06666667}
+    m_SpecifySize: 1
+    m_Name: Stylized_Devil_Bulldog
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5405564524646561983
+      m_GuidHigh: 3873054637151386040
+    m_SerializedTextureGuid:
+      m_GuidLow: 7229244112373521638
+      m_GuidHigh: 16343499116049840377
+    m_Size: {x: 0.1, y: 0.05626506}
+    m_SpecifySize: 1
+    m_Name: Watcher
+    m_Texture: {fileID: 0}
