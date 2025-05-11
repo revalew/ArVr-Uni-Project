@@ -106,7 +106,7 @@ Step 2: Create the script
 
 1. Create a new script "ARPlaceObject"
 
-2. Implement the code for detecting touch, raycast to plane, and spawning object ([`./Assets/ARTrackImage.cs`](./Assets/ARTrackImage.cs))
+2. Implement the code for detecting touch, raycast to plane, and spawning object ([`./Assets/Scripts/ARTrackImage.cs`](./Assets/Scripts/ARTrackImage.cs))
 
 3. Connect the script to AR Session Origin
 
@@ -211,7 +211,7 @@ Step 4: Script for spawning the object
 
 1. Create a new script "ARPlaceObject"
 
-2. Open the script (right-click) and implement the code ([`./Assets/ARPlaceObject.cs`](./Assets/ARPlaceObject.cs))
+2. Open the script (right-click) and implement the code ([`./Assets/Scripts/ARPlaceObject.cs`](./Assets/Scripts/ARPlaceObject.cs))
 
 <br/>
 
