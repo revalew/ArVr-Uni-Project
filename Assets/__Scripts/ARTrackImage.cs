@@ -156,19 +156,20 @@ public class ARTrackImage : MonoBehaviour
                         
                         if (direction != Vector3.zero)
                         {
-                            rotation = Quaternion.LookRotation(direction);
+                            // Rotacja w stronę kamery, a następnie obrót o 180 stopni wokół osi Y
+                            rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180f, 0);
                         }
                         else
                         {
                             // Fallback jeśli kamera jest dokładnie nad/pod obrazem
-                            rotation = Quaternion.LookRotation(Camera.main.transform.forward);
+                            rotation = Quaternion.LookRotation(Camera.main.transform.forward) * Quaternion.Euler(0, 180f, 0);
                         }
                         break;
                         
                     case ModelOrientation.FacingImageForward:
                         // Model patrzy "do przodu" względem obrazu 
                         // (zakładając, że obraz ma określoną orientację)
-                        rotation = trackedImage.transform.rotation * Quaternion.Euler(90f, 0f, 0f);
+                        rotation = trackedImage.transform.rotation * Quaternion.Euler(90f, 180f, 0f);
                         break;
                         
                     case ModelOrientation.FacingImageUp:
@@ -223,12 +224,13 @@ public class ARTrackImage : MonoBehaviour
                         
                         if (direction != Vector3.zero)
                         {
-                            prefabInstance.transform.rotation = Quaternion.LookRotation(direction);
+                            // Dodajemy obrót o 180 stopni wokół osi Y
+                            prefabInstance.transform.rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180f, 0);
                         }
                         break;
                         
                     case ModelOrientation.FacingImageForward:
-                        prefabInstance.transform.rotation = trackedImage.transform.rotation * Quaternion.Euler(90f, 0f, 0f);
+                        prefabInstance.transform.rotation = trackedImage.transform.rotation * Quaternion.Euler(90f, 180f, 0f);
                         break;
                         
                     case ModelOrientation.FacingImageUp:
