@@ -13,7 +13,9 @@ public class ARPlaceObject : MonoBehaviour
     private List<ARRaycastHit> hits = new();
     
     // Lista utworzonych obiektów
-    private List<GameObject> spawnedObjects = new List<GameObject>();
+    public List<GameObject> spawnedObjects = new List<GameObject>();
+
+    public ModelRotationController rotationController;
     
     [Header("Plane Detection Settings")]
     public Button togglePlaneDetectionButton;
@@ -68,6 +70,11 @@ public class ARPlaceObject : MonoBehaviour
                 
                 // Dodaj obiekt do listy
                 spawnedObjects.Add(spawnedObject);
+
+                if (rotationController != null)
+                {
+                    rotationController.HandleSpecialModel(spawnedObject);
+                }
                 
                 // Dodaj etykietę z nazwą prefaba
                 if (showLabels)

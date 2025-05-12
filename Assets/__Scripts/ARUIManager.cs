@@ -31,6 +31,20 @@ public class ARUIManager : MonoBehaviour
     [Range(0.01f, 0.3f)]
     public float sideMarginPercent = 0.1f;
     
+    [Header("Rotation Control")]
+    public GameObject rotationSliderPanel;
+    public Slider rotationSlider;
+    public Text rotationValueText;
+    public ModelRotationController rotationController;
+
+    [Tooltip("Pozycja slidera (0 = lewa strona, 1 = prawa strona)")]
+    [Range(0, 1)]
+    public int sliderPosition = 1;
+
+    [Tooltip("Przesunięcie slidera od góry ekranu (procent wysokości)")]
+    [Range(0.05f, 0.4f)]
+    public float sliderTopMargin = 0.2f;
+
     // Cached canvas reference
     private Canvas mainCanvas;
     private CanvasScaler canvasScaler;
@@ -229,7 +243,135 @@ public class ARUIManager : MonoBehaviour
                 }
             }
         }
+
+        // Dodatkowo obsłuż pozycję slidera
+        if (rotationSliderPanel != null)
+        {
+            RectTransform sliderRect = rotationSliderPanel.GetComponent<RectTransform>();
+            if (sliderRect != null)
+            {
+                // bool isPortrait = Screen.height > Screen.width;
+                // float sideMargin = Screen.width * sideMarginPercent;
+                float margin = Screen.height * 0.05f; // 5% wysokości ekranu
+                
+                if (sliderPosition == 0) // Lewa strona
+                {
+                    sliderRect.anchorMin = new Vector2(0, 0.5f);
+                    sliderRect.anchorMax = new Vector2(0, 0.5f);
+                    sliderRect.pivot = new Vector2(0, 0.5f);
+                    
+                    if (isPortrait)
+                    {
+                        // Pionowo po lewej stronie
+                        sliderRect.anchoredPosition = new Vector2(sideMargin, margin);
+                        sliderRect.rotation = Quaternion.Euler(0, 0, 90);
+                        sliderRect.sizeDelta = new Vector2(80, Screen.height * 0.3f);
+                    }
+                    else
+                    {
+                        // Poziomo po lewej stronie
+                        sliderRect.anchoredPosition = new Vector2(sideMargin, margin);
+                        sliderRect.rotation = Quaternion.identity;
+                        sliderRect.sizeDelta = new Vector2(Screen.width * 0.3f, 80);
+                    }
+                }
+                else // Prawa strona
+                {
+                    sliderRect.anchorMin = new Vector2(1, 0.5f);
+                    sliderRect.anchorMax = new Vector2(1, 0.5f);
+                    sliderRect.pivot = new Vector2(1, 0.5f);
+                    
+                    if (isPortrait)
+                    {
+                        // Pionowo po prawej stronie
+                        sliderRect.anchoredPosition = new Vector2(-sideMargin, margin);
+                        sliderRect.rotation = Quaternion.Euler(0, 0, -90);
+                        sliderRect.sizeDelta = new Vector2(80, Screen.height * 0.3f);
+                    }
+                    else
+                    {
+                        // Poziomo po prawej stronie
+                        sliderRect.anchoredPosition = new Vector2(-sideMargin, margin);
+                        sliderRect.rotation = Quaternion.identity;
+                        sliderRect.sizeDelta = new Vector2(Screen.width * 0.3f, 80);
+                    }
+                }
+            }
+        }
+
+        // Obsługa slidera rotacji
+        UpdateSliderLayout();
     }
+
+    private void UpdateSliderLayout()
+    {
+        if (rotationSliderPanel == null) return;
+        
+        RectTransform sliderRect = rotationSliderPanel.GetComponent<RectTransform>();
+        if (sliderRect == null) return;
+        
+        bool isPortrait = Screen.height > Screen.width;
+        float sideMargin = Screen.width * 0.05f; // 5% szerokości ekranu
+        float topMargin = Screen.height * sliderTopMargin;
+        
+        // Reset rotacji i skali
+        sliderRect.localScale = Vector3.one;
+        
+        if (isPortrait)
+        {
+            // Tryb pionowy - slider przy bocznej krawędzi, obrócony o 90 stopni
+            if (sliderPosition == 0) // Lewa strona
+            {
+                // Ustaw anchory do lewej krawędzi, wyśrodkowany w pionie
+                sliderRect.anchorMin = new Vector2(0, 0.5f);
+                sliderRect.anchorMax = new Vector2(0, 0.5f);
+                sliderRect.pivot = new Vector2(0.5f, 0.5f);
+                
+                // Obróć slider o 90 stopni
+                sliderRect.localRotation = Quaternion.Euler(0, 0, 90);
+                
+                // Ustaw pozycję przy lewej krawędzi
+                sliderRect.anchoredPosition = new Vector2(40, 0);
+                
+                // Ustaw rozmiar (zamień szerokość z wysokością po obrocie)
+                sliderRect.sizeDelta = new Vector2(200, 60);
+            }
+            else // Prawa strona
+            {
+                // Ustaw anchory do prawej krawędzi, wyśrodkowany w pionie
+                sliderRect.anchorMin = new Vector2(1, 0.5f);
+                sliderRect.anchorMax = new Vector2(1, 0.5f);
+                sliderRect.pivot = new Vector2(0.5f, 0.5f);
+                
+                // Obróć slider o -90 stopni (przeciwnie do ruchu wskazówek zegara)
+                sliderRect.localRotation = Quaternion.Euler(0, 0, -90);
+                
+                // Ustaw pozycję przy prawej krawędzi
+                sliderRect.anchoredPosition = new Vector2(-40, 0);
+                
+                // Ustaw rozmiar (zamień szerokość z wysokością po obrocie)
+                sliderRect.sizeDelta = new Vector2(200, 60);
+            }
+        }
+        else
+        {
+            // Tryb poziomy - slider na górze ekranu
+            // Bez obrotu (poziomy slider)
+            sliderRect.localRotation = Quaternion.identity;
+            
+            // Ustaw anchory do górnej krawędzi, wyśrodkowany w poziomie
+            sliderRect.anchorMin = new Vector2(0.5f, 1);
+            sliderRect.anchorMax = new Vector2(0.5f, 1);
+            sliderRect.pivot = new Vector2(0.5f, 1);
+            
+            // Ustaw pozycję poniżej górnej krawędzi
+            sliderRect.anchoredPosition = new Vector2(0, -topMargin);
+            
+            // Ustaw rozmiar (szerszy w poziomie)
+            sliderRect.sizeDelta = new Vector2(400, 60);
+        }
+    }
+
     
     private void ConnectARScripts()
     {
@@ -276,6 +418,28 @@ public class ARUIManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Brakujące referencje dla przycisku obrazów!");
+        }
+
+        // Inicjalizacja kontrolera rotacji
+        if (rotationController == null && rotationSlider != null)
+        {
+            rotationController = gameObject.GetComponent<ModelRotationController>();
+            if (rotationController == null)
+            {
+                rotationController = gameObject.AddComponent<ModelRotationController>();
+            }
+            
+            rotationController.rotationSlider = rotationSlider;
+            rotationController.rotationValueText = rotationValueText;
+            rotationController.trackImageScript = trackImageScript;
+            rotationController.placeObjectScript = placeObjectScript;
+            
+            // Przypisz kontroler rotacji do skryptów AR
+            if (trackImageScript != null)
+                trackImageScript.rotationController = rotationController;
+                
+            if (placeObjectScript != null)
+                placeObjectScript.rotationController = rotationController;
         }
     }
 }

@@ -17,9 +17,11 @@ public class ARTrackImage : MonoBehaviour
     public List<ImagePrefabPair> imagePrefabPairs = new List<ImagePrefabPair>();
     
     // Słownik do śledzenia zinstancjonowanych obiektów
-    private Dictionary<string, GameObject> spawnedObjects = new Dictionary<string, GameObject>();
+    public Dictionary<string, GameObject> spawnedObjects = new Dictionary<string, GameObject>();
     
     private ARTrackedImageManager trackedImageManager;
+
+    public ModelRotationController rotationController;
     
     // Opcje orientacji modelu
     public enum ModelOrientation
@@ -182,6 +184,12 @@ public class ARTrackImage : MonoBehaviour
                 prefabInstance = Instantiate(prefabToSpawn, position, rotation);
                 prefabInstance.name = $"{imageName}_Model"; // Nadaj unikalną nazwę
                 
+                // Dodaj obsługę specjalnych modeli
+                if (rotationController != null)
+                {
+                    rotationController.HandleSpecialModel(prefabInstance);
+                }
+
                 // Dodaj etykietę z nazwą obrazu/prefabu jeśli włączone
                 if (showLabels)
                 {
