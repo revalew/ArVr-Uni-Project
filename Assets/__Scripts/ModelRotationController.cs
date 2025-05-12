@@ -101,12 +101,8 @@ public class ModelRotationController : MonoBehaviour
         if (model.name.Contains("Spider_1"))
         {
             // Aplikuj dodatkową rotację o 180 stopni
-            Vector3 currentRotation = model.transform.eulerAngles;
-            model.transform.eulerAngles = new Vector3(
-                currentRotation.x,
-                currentRotation.y + spider1YRotation,
-                currentRotation.z
-            );
+            Quaternion currentRotation = model.transform.rotation;
+            model.transform.rotation = currentRotation * Quaternion.Euler(0f, spider1YRotation, 0f);
         }
         
         // Obsługa modelu Watcher

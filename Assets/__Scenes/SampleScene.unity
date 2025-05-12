@@ -734,7 +734,7 @@ MonoBehaviour:
   rotationValueText: {fileID: 440404728}
   rotationController: {fileID: 734845166}
   sliderPosition: 1
-  sliderTopMargin: 0.1
+  sliderTopMargin: 0.05
 --- !u!114 &734845165
 MonoBehaviour:
   m_ObjectHideFlags: 0
